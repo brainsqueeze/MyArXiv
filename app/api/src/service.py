@@ -50,17 +50,9 @@ def handler(event, context):
         body = json.loads(body)
 
     if re.match(r"/api/search$", path, re.M | re.I):
-        print("hello")
-
         arXiv = RequestBuilder()
-        arXiv.search_by_category(category="computer_scient", sub_category="natural_language_processing")
+        arXiv.search_by_category(category="computer_science", sub_category="natural_language_processing")
 
-        arXiv_response = ResponseHandler(url=arXiv.url, payload=arXiv.parameters)
+        arXiv_response = ResponseHandler(payload=arXiv.parameters)
         print(arXiv_response.raw_response)
     return
-
-
-# builder = ResponseHandler()
-# builder.set_query(remove=True)
-# builder.search_by_category(category="computer_science", sub_category="natural_language_processing")
-# print(builder.raw_response)

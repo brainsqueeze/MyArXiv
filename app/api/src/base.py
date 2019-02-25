@@ -1,11 +1,10 @@
-from urllib import request
+from urllib import request, parse
 import json
 
 
 class RequestBuilder(object):
 
     def __init__(self):
-        self.base = "http://export.arxiv.org/api/query"
         self.__parameters = {
             "search_query": "all",
             "start": 0,
@@ -64,32 +63,38 @@ class RequestBuilder(object):
         return self
 
     @property
-    def url(self):
-        return self.base
-
-    @property
     def parameters(self):
         return self.__parameters
 
 
 class ResponseHandler(object):
 
-    def __init__(self, url, payload):
-        self.__response = self.__post(url=url, payload=payload)
+    def __init__(self, payload, method='GET'):
+        self.__base = "http://export.arxiv.org/api/query"
 
-    @staticmethod
-    def __post(url, payload):
-        assert isinstance(url, str)
+        if method.lower() == 'post':
+            self.__response = self.__post(payload=payload)
+        else:
+            self.__response = self.__get(payload=payload)
+
+    def __post(self, payload):
         assert isinstance(payload, dict)
 
         req = request.Request(
-            url=url,
+            url=self.__base,
             data=json.dumps(payload).encode('utf8'),
-            headers={"content-type": "application/xml"}
+            headers={"Content-Type": "application/xml"}
         )
 
         response = request.urlopen(req)
         return response.read().decode('utf8')
+
+    def __get(self, payload):
+        assert isinstance(payload, dict)
+
+        url = f"{self.__base}?{parse.urlencode(payload)}"
+        req = request.Request(url, headers={"Content-Type": "application/xml"})
+        return request.urlopen(req).read().decode('utf8')
 
     @property
     def raw_response(self):
