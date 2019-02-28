@@ -3,6 +3,8 @@ from urllib import request, parse
 from xml.etree import ElementTree
 import json
 
+import datetime
+
 
 class RequestBuilder(object):
 
@@ -10,7 +12,7 @@ class RequestBuilder(object):
         self.__parameters = {
             "search_query": "all",
             "start": 0,
-            "max_results": 10,
+            "max_results": 100,
             "sortBy": "submittedDate",
             "sortOrder": "descending"
         }
@@ -114,6 +116,7 @@ class ResponseHandler(object):
         space = self.__namespace
         article = {
             "urls": [self.clean(item.text) for item in entry.findall(f".//{name}:id", namespaces=space)],
+            "dates": [self.clean(item.text) for item in entry.findall(f".//{name}:published", namespaces=space)],
             "titles": [self.clean(item.text) for item in entry.findall(f".//{name}:title", namespaces=space)],
             "summaries": [self.clean(item.text) for item in entry.findall(f".//{name}:summary", namespaces=space)],
             "categories": [
@@ -131,16 +134,29 @@ class ResponseHandler(object):
     def parse(self):
         root = ElementTree.fromstring(self.xml)
         name = self.__name
+        today = datetime.datetime.now()
+        articles = []
 
-        articles = list(map(self._format_json, root.findall(f".//{name}:entry", namespaces=self.__namespace)))
-        total_results = root.find(".//open:totalResults", namespaces=self.__open_search).text
+        for doc in map(self._format_json, root.findall(f".//{name}:entry", namespaces=self.__namespace)):
+            dates = doc["dates"]
+            if not dates:
+                continue
 
-        if total_results:
-            assert isinstance(total_results, str)
+            most_recent = datetime.datetime.strptime(dates[0], '%Y-%m-%dT%H:%M:%SZ')
 
-            if total_results.isnumeric():
-                total_results = int(total_results)
+            if (today - most_recent).days <= 1:
+                articles.append(doc)
 
+        # articles = list(map(self._format_json, root.findall(f".//{name}:entry", namespaces=self.__namespace)))
+        # total_results = root.find(".//open:totalResults", namespaces=self.__open_search).text
+
+        # if total_results:
+        #     assert isinstance(total_results, str)
+
+        #     if total_results.isnumeric():
+        #         total_results = int(total_results)
+
+        total_results = len(articles)
         response = {
             "total_results": total_results,
             "articles": articles
