@@ -4,10 +4,23 @@ services:
   api:
     build: ./api/
     ports:
-      #CherryPy webserver port mapping
+      # CherryPy webserver port mapping
       - "9091:8080"
-      #Python remote debug port mapping
+      # Python remote debug port mapping
       - "10091:8081"
 
     volumes:
       - ./api/:/app/src/
+
+  web:
+    build: ./web/
+    ports:
+      # webpack-development-server webserver port mapping
+      - "9090:9090"
+    environment:
+      - NODE_ENV=local
+    volumes:
+      - ./web/:/app/src/
+      - /app/src/node_modules/
+    depends_on:
+      - api

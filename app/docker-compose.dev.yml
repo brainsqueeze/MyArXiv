@@ -1,6 +1,6 @@
 version: '3'
 services:
 
-  # web:
-  #   environment:
-  #     - NODE_ENV=localdev
+  web:
+    environment:
+      - NODE_ENV=localdev

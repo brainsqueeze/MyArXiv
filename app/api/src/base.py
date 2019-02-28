@@ -1,4 +1,6 @@
 from urllib import request, parse
+
+from xml.etree import ElementTree
 import json
 
 
@@ -14,13 +16,13 @@ class RequestBuilder(object):
         }
 
         self.__categories = {
-            "computer_science": {
+            "cs": {
                 "machine_learning": "cs.LG",
                 "natural_language_processing": "cs.CL",
                 "artificial_intelligence": "cs.AI",
                 "computer_vision": "cs.CV"
             },
-            "physics": {
+            "hep": {
                 "HEP-phenomenology": "hep-ph",
                 "HEP-theory": "hep-th",
                 "HEP-experiment": "hep-ex"
@@ -71,6 +73,9 @@ class ResponseHandler(object):
 
     def __init__(self, payload, method='GET'):
         self.__base = "http://export.arxiv.org/api/query"
+        self.__name = "atom"
+        self.__namespace = {self.__name: "http://www.w3.org/2005/Atom"}
+        self.__open_search = {"open": "http://a9.com/-/spec/opensearch/1.1/"}
 
         if method.lower() == 'post':
             self.__response = self.__post(payload=payload)
@@ -96,6 +101,52 @@ class ResponseHandler(object):
         req = request.Request(url, headers={"Content-Type": "application/xml"})
         return request.urlopen(req).read().decode('utf8')
 
+    @staticmethod
+    def clean(text):
+        if isinstance(text, str):
+            return text.strip()
+        return text
+
+    def _format_json(self, entry):
+        assert isinstance(entry, ElementTree.Element)
+
+        name = self.__name
+        space = self.__namespace
+        article = {
+            "urls": [self.clean(item.text) for item in entry.findall(f".//{name}:id", namespaces=space)],
+            "titles": [self.clean(item.text) for item in entry.findall(f".//{name}:title", namespaces=space)],
+            "summaries": [self.clean(item.text) for item in entry.findall(f".//{name}:summary", namespaces=space)],
+            "categories": [
+                self.clean(item.attrib["term"])
+                for item in entry.findall(f".//{name}:category", namespaces=space)
+            ],
+            "authors": [
+                self.clean(author.find(f".//{name}:name", namespaces=space).text)
+                for author in entry.findall(f".//{name}:author", namespaces=space)
+            ]
+        }
+
+        return article
+
+    def parse(self):
+        root = ElementTree.fromstring(self.xml)
+        name = self.__name
+
+        articles = list(map(self._format_json, root.findall(f".//{name}:entry", namespaces=self.__namespace)))
+        total_results = root.find(".//open:totalResults", namespaces=self.__open_search).text
+
+        if total_results:
+            assert isinstance(total_results, str)
+
+            if total_results.isnumeric():
+                total_results = int(total_results)
+
+        response = {
+            "total_results": total_results,
+            "articles": articles
+        }
+        return response
+
     @property
-    def raw_response(self):
+    def xml(self):
         return self.__response

@@ -20,6 +20,7 @@ def respond(err, res=None):
             'headers': {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': "*",
+                'Access-Control-Allow-Header': 'Content-Type',
                 'Access-Control-Allow-Methods': 'POST, OPTIONS'
             }
         }
@@ -32,6 +33,7 @@ def respond(err, res=None):
             'headers': {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': "*",
+                'Access-Control-Allow-Header': 'Content-Type',
                 'Access-Control-Allow-Methods': 'POST, OPTIONS'
             }
         }
@@ -48,11 +50,22 @@ def handler(event, context):
     body = event["body"] if "body" in event else event["queryStringParameters"]
     if isinstance(body, str):
         body = json.loads(body)
+    assert isinstance(body, dict)
 
     if re.match(r"/api/search$", path, re.M | re.I):
+        body = body.get("payload", {})
+
         arXiv = RequestBuilder()
-        arXiv.search_by_category(category="computer_science", sub_category="natural_language_processing")
+        arXiv.search_by_category(
+            category=body.get("field", "cs"),
+            sub_category=body.get("subField", "natural_language_processing")
+        )
 
         arXiv_response = ResponseHandler(payload=arXiv.parameters)
-        print(arXiv_response.raw_response)
-    return
+        response = arXiv_response.parse()
+
+        output = {"success": True, "data": response}
+        return respond(None, res=output)
+    else:
+        results = {'message': 'endpoint not found'}
+        return respond(None, results)
