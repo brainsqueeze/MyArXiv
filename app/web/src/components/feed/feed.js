@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Filters from './filters';
+import Articles from './articles';
 
 import { getSearchResults } from '../../actions/search';
 
@@ -16,10 +17,22 @@ class Feed extends Component {
     return (
       <div>
         <Filters /> 
+        <Articles 
+          loading={this.props.search.loading}
+          data={this.props.search.results}
+        />
       </div>
       
     )  
   }
 }
 
-export default connect(null, { getSearchResults })(Feed);
+function mapStateToProps (state) {
+  return {
+    search: state.search,
+    results: state.search.results
+  };
+}
+
+// export default connect(null, { getSearchResults })(Feed);
+export default connect(mapStateToProps, { getSearchResults })(Feed);

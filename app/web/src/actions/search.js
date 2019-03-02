@@ -28,7 +28,13 @@ function doSearch (type, parameters, dispatch) {
   })
     .then((response) => response.json())
     .then((response) => {
-      console.log(response);
+      // console.log(response);
+
+      let results = response;
+      dispatch({
+        type: type.SUCCESS,
+        payload: results
+      });
     })
     .catch((err, data) => {
       console.error(err);
