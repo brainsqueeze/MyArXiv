@@ -13,7 +13,6 @@ body{
     width: 20%;
     min-height: 100%;
     height: 100vh;
-    // background-color: #42b9f4;
     background-color: #b31b1b;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 1.19);
 
@@ -57,7 +56,10 @@ body{
     background: rgba(0, 0, 0, 0.6);
 
     .article-modal {
-        background-color: #d7dbe2;
+        // background-color: #d7dbe2;
+        background-color: #F2F2EC;
+        border-color: #B28854;
+        color: #1C2430;
         border-radius: 5px;
 
         position:fixed;
@@ -73,8 +75,50 @@ body{
             text-align: center;
 
             .detail-content {
+                // button {
+                //     color: #1C2430;
+                //     background-color: #F2F2EC;
+                //     border-color: #B28854;
+                //     border-radius: 15px;
+                // }
+                // .interested {
+                //     background-color: transparent;
+                //     border-color: transparent;
+                // }
+                // .not-interested {
+                //     background-color: transparent;
+                //     border-color: transparent;
+                // }
+                a {
+                    color: #1C2430;
+                }
                 .article-title {
-                    border-bottom: 1px solid #e9ecef;
+                    border-bottom: 1px solid #1C2430;
+                }
+            }
+        }
+
+        .modal-footer {
+            button {
+                color: #1C2430;
+                background-color: #F2F2EC;
+                border-color: #B28854;
+                border-radius: 15px;
+            }
+            .interested {
+                background-color: transparent;
+                border-color: transparent;
+
+                .fas.fa-heart.true {
+                    color: green;
+                }
+            }
+            .not-interested {
+                background-color: transparent;
+                border-color: transparent;
+
+                .fas.fa-heart-broken.true {
+                    color: red;
                 }
             }
         }
@@ -102,17 +146,33 @@ body{
     float: right;
     width: 80%;
     min-height: 100%;
-    // height: 100vh;
+    // background-color: #F2F2EC;
+    height: 100vh;
 
     .article-card {
         width: 50%;
         margin: 0 auto;
-        margin-top: 20px;
-        border: 1px solid #adb3bc;
-        background-color: #d7dbe2;
-        // background-color: #f4d69f;
+        margin-top: 50px;
+        border: 1px solid #B28854;
+        // background-color: #d7dbe2;
+        background-color: #F2F2EC;
         border-radius: 5px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+        button {
+            color: #1C2430;
+            // background-color: #F2F2EC;
+            // border-color: #B28854;
+            background-color: transparent;
+            border-color: transparent;
+            border-radius: 15px;
+
+
+            cursor: pointer;
+        }
+        a {
+            color: #1C2430;
+        }
 
         .content {
             padding: 15px;

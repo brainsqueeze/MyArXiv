@@ -16,7 +16,8 @@ class Articles extends Component {
     let card = <div key={index} className="article-card">
       <SummaryCard 
         keyValue={index}
-        buttonLabel="See details"
+        // buttonLabel="Details"
+        buttonLabel={<i className="fas fa-info-circle"></i>}
         title={titles[0]}
         url={urls[0]}
         authors={authors}
@@ -30,28 +31,18 @@ class Articles extends Component {
     if (!this.props.loading && this.props.data) {
       // console.log(this.props.data);
       let articles = this.props.data.data.articles;
-
-      let output = <section className="article-feed">
-        {articles.map((article, index) => {return this.renderItem(article, index);})}
-      </section>;
-
-      return output
+      return articles.map((article, index) => {return this.renderItem(article, index);})
     }
     return null
   }
 
   render() {
-    let items = this.renderItems();
-    return items;
+    return (
+      <section className="article-feed">
+        {this.renderItems()}
+      </section>
+    )
   }
 }
 
-// function mapStateToProps (state) {
-//   return {
-//     search: state.search,
-//     results: state.search.results
-//   };
-// }
-
-// export default connect(mapStateToProps, {getSearchResults})(Articles);
 export default Articles;

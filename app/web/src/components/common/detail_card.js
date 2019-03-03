@@ -18,7 +18,6 @@ class DetailCard extends Component {
             <p>{this.props.summary}</p>
           </CardBody>
         </Card>
-        <Button color="primary" onClick={this.props.toggle} style={{ marginBottom: '1rem' }}>Close</Button>
       </div>
     );
   }
