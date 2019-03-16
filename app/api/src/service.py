@@ -66,6 +66,9 @@ def handler(event, context):
 
         output = {"success": True, "data": response}
         return respond(None, res=output)
+    elif re.match(r"/api/rate$", path, re.M | re.I):
+        print(json.dumps(body, indent=2))
+        pass
     else:
         results = {'message': 'endpoint not found'}
         return respond(None, results)

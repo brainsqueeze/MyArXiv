@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from "prop-types";
+import { connect } from 'react-redux';
+// import PropTypes from "prop-types";
 import { 
   Button, 
   Modal, 
-  ModalHeader, 
+  // ModalHeader, 
   ModalBody, 
   ModalFooter, 
   Card, 
@@ -11,6 +12,8 @@ import {
   Container
 } from 'reactstrap';
 import DetailCard from './detail_card';
+
+import { applyRating } from '../../actions/rate';
 
 class SummaryCard extends Component {
 
@@ -20,7 +23,8 @@ class SummaryCard extends Component {
     this.state = {
       modal: false,
       interested: false,
-      notInterested: false
+      notInterested: false,
+      hasUpdated: false
     };
 
     this.toggle = this.toggle.bind(this);
@@ -29,22 +33,29 @@ class SummaryCard extends Component {
   }
 
   toggle() {
+    if (this.state.modal && this.state.hasUpdated) {
+      this.props.applyRating(this.state);
+    }
+
     this.setState(prevState => ({
-      modal: !prevState.modal
+      modal: !prevState.modal,
+      hasUpdated: false
     }));
   }
 
   setInterested() {
     this.setState(prevState => ({
       interested: !prevState.interested,
-      notInterested: false
+      notInterested: false,
+      hasUpdated: !prevState.hasUpdated
     }));
   }
 
   setNotInterested() {
     this.setState(prevState => ({
       interested: false,
-      notInterested: !prevState.notInterested
+      notInterested: !prevState.notInterested,
+      hasUpdated: !prevState.hasUpdated
     }));
   }
 
@@ -61,34 +72,34 @@ class SummaryCard extends Component {
         <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}</Button>
 
         <Container>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className="article-modal">
-          <ModalBody>
-            <DetailCard 
-              status={this.state.status} 
-              toggle={this.toggle} 
-              {...this.props}
-            /> 
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={this.toggle} style={{ marginBottom: '1rem' }}>Close</Button>
-            <Button 
-              className="interested"
-              color="primary" 
-              onClick={this.setInterested} 
-              style={{ marginBottom: '1rem' }}
-            >
-              <i className={`fas fa-heart ${this.state.interested}`}></i>
-            </Button>
-            <Button 
-              className="not-interested"
-              color="primary" 
-              onClick={this.setNotInterested} 
-              style={{ marginBottom: '1rem' }}
-            >
-              <i className={`fas fa-heart-broken ${this.state.notInterested}`}></i>
-            </Button>
-          </ModalFooter>
-        </Modal>
+          <Modal isOpen={this.state.modal} toggle={this.toggle} className="article-modal">
+            <ModalBody>
+              <DetailCard 
+                status={this.state.status} 
+                toggle={this.toggle} 
+                {...this.props}
+              /> 
+            </ModalBody>
+            <ModalFooter>
+              <Button color="primary" onClick={this.toggle} style={{ marginBottom: '1rem' }}>Close</Button>
+              <Button 
+                className="interested"
+                color="primary" 
+                onClick={this.setInterested} 
+                style={{ marginBottom: '1rem' }}
+              >
+                <i className={`fas fa-heart ${this.state.interested}`}></i>
+              </Button>
+              <Button 
+                className="not-interested"
+                color="primary" 
+                onClick={this.setNotInterested} 
+                style={{ marginBottom: '1rem' }}
+              >
+                <i className={`fas fa-heart-broken ${this.state.notInterested}`}></i>
+              </Button>
+            </ModalFooter>
+          </Modal>
         </Container>
       </div>
     );
@@ -96,59 +107,13 @@ class SummaryCard extends Component {
 
 }
 
-// Modal.propTypes = {
-//   // boolean to control the state of the popover
-//   isOpen:  PropTypes.bool,
-//   autoFocus: PropTypes.bool,
-//   // if modal should be centered vertically in viewport
-//   centered: PropTypes.bool,
-//   // corresponds to bootstrap's modal sizes, ie. 'lg' or 'sm'
-//   size: PropTypes.string,
-//   // callback for toggling isOpen in the controlling component
-//   toggle:  PropTypes.func,
-//   role: PropTypes.string, // defaults to "dialog"
-//   // used to reference the ID of the title element in the modal
-//   labelledBy: PropTypes.string,
-//   keyboard: PropTypes.bool,
-//   // control backdrop, see http://v4-alpha.getbootstrap.com/components/modal/#options
-//   backdrop: PropTypes.oneOfType([
-//     PropTypes.bool,
-//     PropTypes.oneOf(['static'])
-//   ]),
-//   // allows for a node/component to exist next to the modal (outside of it). Useful for external close buttons
-//   // external: PropTypes.node,
-//   // called on componentDidMount
-//   onEnter: PropTypes.func,
-//   // called on componentWillUnmount
-//   onExit: PropTypes.func,
-//   // called when done transitioning in
-//   onOpened: PropTypes.func,
-//   // called when done transitioning out
-//   onClosed: PropTypes.func,
-//   className: PropTypes.string,
-//   wrapClassName: PropTypes.string,
-//   modalClassName: PropTypes.string,
-//   backdropClassName: PropTypes.string,
-//   contentClassName: PropTypes.string,
-//   // boolean to control whether the fade transition occurs (default: true)
-//   fade: PropTypes.bool,
-//   cssModule: PropTypes.object,
-//   // zIndex defaults to 1000.
-//   zIndex: PropTypes.oneOfType([
-//     PropTypes.number,
-//     PropTypes.string,
-//   ]),
-//   // backdropTransition - controls backdrop transition
-//   // timeout is 150ms by default to match bootstrap
-//   // see Fade for more details
-//   // backdropTransition: PropTypes.shape(Fade.propTypes),
-//   // modalTransition - controls modal transition
-//   // timeout is 300ms by default to match bootstrap
-//   // see Fade for more details
-//   // modalTransition: PropTypes.shape(Fade.propTypes),
-//   innerRef: PropTypes.object,
-//   // if modal should be destructed/removed from DOM after closing
-//   unmountOnClose: PropTypes.bool // defaults to true
-// }
+function mapStateToProps (state) {
+  return {
+    interested: state.interested,
+    notInterested: state.notInterested,
+    results: state.search.results
+  };
+}
 
-export default SummaryCard;
+// export default SummaryCard;
+export default connect(mapStateToProps, { applyRating })(SummaryCard);
