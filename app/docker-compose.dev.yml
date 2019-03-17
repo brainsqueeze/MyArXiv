@@ -1,6 +1,13 @@
 version: '3'
 services:
 
+  api:
+    env_file:
+      - .env
+    volumes:
+      - ./api/:/app/src/
+      - '${SQLITE_PATH}:/app/src/MyArXivDB'
+
   web:
     environment:
       - NODE_ENV=localdev

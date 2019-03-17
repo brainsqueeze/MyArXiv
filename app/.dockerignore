@@ -4,6 +4,7 @@
 **/.dockerignore
 **/Dockerfile*
 **/docker-compose*
+**/*.env
 **/requirements.txt
 .gitignore
 .git

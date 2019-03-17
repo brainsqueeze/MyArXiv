@@ -22,8 +22,8 @@ class SummaryCard extends Component {
 
     this.state = {
       modal: false,
-      interested: false,
-      notInterested: false,
+      interested: this.props.interested != null ? this.props.interested : false,
+      notInterested: this.props.interested != null ? !this.props.interested : false,
       hasUpdated: false
     };
 
@@ -34,7 +34,17 @@ class SummaryCard extends Component {
 
   toggle() {
     if (this.state.modal && this.state.hasUpdated) {
-      this.props.applyRating(this.state);
+      let url = this.props.url;
+      let id = url.search(/\d{4,}\.\d{4,}/g);
+      let version = url.search(/v\d/g);  // the arXiv article ID format, don't care about version number
+      let payload = {
+        articleId: version > 0 ? url.slice(id, version) : url.slice(id),
+        interested: this.state.interested && !this.state.notInterested,
+        title: this.props.title,
+        content: this.props.summary,
+        categories: this.props.categories.join(';')
+      }
+      this.props.applyRating(payload);
     }
 
     this.setState(prevState => ({
@@ -109,11 +119,8 @@ class SummaryCard extends Component {
 
 function mapStateToProps (state) {
   return {
-    interested: state.interested,
-    notInterested: state.notInterested,
     results: state.search.results
   };
 }
 
-// export default SummaryCard;
 export default connect(mapStateToProps, { applyRating })(SummaryCard);

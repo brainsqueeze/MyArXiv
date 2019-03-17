@@ -11,7 +11,7 @@ class Articles extends Component {
   }
 
   renderItem(arxivArticle, index) {
-    let { titles, authors, summaries, urls, dates, categories } = arxivArticle;
+    let { titles, authors, summaries, urls, interested, dates, categories } = arxivArticle;
 
     let card = <div key={index} className="article-card">
       <SummaryCard 
@@ -22,6 +22,8 @@ class Articles extends Component {
         url={urls[0]}
         authors={authors}
         summary={summaries[0]}
+        categories={categories}
+        interested={interested}
       />
     </div>;
     return card

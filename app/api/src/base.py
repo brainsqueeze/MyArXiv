@@ -144,7 +144,7 @@ class ResponseHandler(object):
 
             most_recent = datetime.datetime.strptime(dates[0], '%Y-%m-%dT%H:%M:%SZ')
 
-            if (today - most_recent).days <= 4:
+            if (today - most_recent).days <= 1:
                 articles.append(doc)
 
         # articles = list(map(self._format_json, root.findall(f".//{name}:entry", namespaces=self.__namespace)))

@@ -1,4 +1,3 @@
 cherrypy
 ptvsd==4.1.3
 pydevd
-pymysql
