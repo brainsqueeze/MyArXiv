@@ -9,6 +9,7 @@ import {
 import { hot } from 'react-hot-loader';
 
 import Feed from './feed/feed';
+import Header from './feed/header';
 import NotFound from './not_found';
 import ErrorBoundary from './error_boundary';
 
@@ -53,6 +54,8 @@ class App extends Component {
     return (
       <div className="app">
         <div className="container">
+
+          <Header/>
 
           <main id="site-content">
             <ErrorBoundary>

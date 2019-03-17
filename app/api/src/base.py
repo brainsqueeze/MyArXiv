@@ -155,7 +155,7 @@ class ResponseHandler(object):
 
             most_recent = datetime.datetime.strptime(dates[0], '%Y-%m-%dT%H:%M:%SZ')
 
-            if (today - most_recent).days <= 1:
+            if (today - most_recent).days <= 4:
                 articles.append(doc)
 
         total_results = len(articles)

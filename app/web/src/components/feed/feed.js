@@ -22,7 +22,6 @@ class Feed extends Component {
           data={this.props.search.results}
         />
       </div>
-      
     )  
   }
 }

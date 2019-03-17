@@ -1,10 +1,43 @@
 html{
     min-height: 100%;
     position: relative;
+    overflow: hidden;
 }
 body{
     height: 100%;
     margin: 0;
+}
+
+/* ---- HEADER ---- */
+#site-header {
+    display: inline-flex;
+    width: 100vw;
+    background-color: #1C2430;
+    color: #F2F2EC;
+    // min-height: 100px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 black;
+
+    #site-logo {
+        margin: 0 auto 0 0;
+        float: left;
+    }
+
+    #site-nav {
+        float: right;
+
+        li {
+            list-style: none;
+            display: inline-block;
+            margin: 0 1em;
+        }
+    }
+
+    #site-logo a,
+    #site-nav ul li a{
+        color: #F2F2EC;
+        text-decoration: none;
+        padding: 1em;
+    }
 }
 
 /* ---- FILTERS ---- */
@@ -15,6 +48,7 @@ body{
     height: 100vh;
     background-color: #b31b1b;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 1.19);
+    // padding-top: 100px;
 
     overflow: hidden;
     position: fixed;
@@ -75,26 +109,8 @@ body{
             text-align: center;
 
             .detail-content {
-                // button {
-                //     color: #1C2430;
-                //     background-color: #F2F2EC;
-                //     border-color: #B28854;
-                //     border-radius: 15px;
-                // }
-                // .interested {
-                //     background-color: transparent;
-                //     border-color: transparent;
-                // }
-                // .not-interested {
-                //     background-color: transparent;
-                //     border-color: transparent;
-                // }
-                a {
-                    color: #1C2430;
-                }
-                .article-title {
-                    border-bottom: 1px solid #1C2430;
-                }
+                a {color: #1C2430;}
+                .article-title {border-bottom: 1px solid #1C2430;}
             }
         }
 
@@ -148,6 +164,14 @@ body{
     min-height: 100%;
     // background-color: #F2F2EC;
     height: 100vh;
+    // padding-top: 100px;
+    padding-top: 20px;
+    overflow-y: auto;
+
+    .search-description {
+        display: inline-block;
+        padding-left: 50px;
+    }
 
     .article-card {
         width: 50%;

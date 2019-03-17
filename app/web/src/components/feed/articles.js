@@ -43,7 +43,7 @@ class Articles extends Component {
       <section className="article-feed">
         {
           this.props.data.data ?
-          <span>Searching by <b>{this.props.data.data.search_category}</b></span>
+          <span className="search-description">Searching by <b>{this.props.data.data.search_category}</b></span>
           : null
         }
         {this.renderItems()}
