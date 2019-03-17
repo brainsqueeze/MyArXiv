@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SummaryCard from '../common/summary_card';
-import { getSearchResults } from '../../actions/search';
+// import { getSearchResults } from '../../actions/search';
 
 class Articles extends Component {
 
@@ -41,6 +41,11 @@ class Articles extends Component {
   render() {
     return (
       <section className="article-feed">
+        {
+          this.props.data.data ?
+          <span>Searching by <b>{this.props.data.data.search_category}</b></span>
+          : null
+        }
         {this.renderItems()}
       </section>
     )

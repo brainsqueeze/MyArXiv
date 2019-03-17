@@ -79,6 +79,17 @@ class ResponseHandler(object):
         self.__namespace = {self.__name: "http://www.w3.org/2005/Atom"}
         self.__open_search = {"open": "http://a9.com/-/spec/opensearch/1.1/"}
 
+        reverse_lookup = {
+            "cs.LG": "Computer Science: Machine Learning",
+            "cs.CL": "Computer Science: Natural Language Processing",
+            "cs.AI": "Computer Science: Artificial Intelligence",
+            "cs.CV": "Computer Science: Computer Vision",
+            "hep-ex": "High Energy Physics: Experiment",
+            "hep-ph": "High Energy Physics: Phenomenology",
+            "hep-tg": "High Energy Physics: Theory"
+        }
+        self.category = reverse_lookup[payload["search_query"]]
+
         if method.lower() == 'post':
             self.__response = self.__post(payload=payload)
         else:
@@ -147,18 +158,10 @@ class ResponseHandler(object):
             if (today - most_recent).days <= 1:
                 articles.append(doc)
 
-        # articles = list(map(self._format_json, root.findall(f".//{name}:entry", namespaces=self.__namespace)))
-        # total_results = root.find(".//open:totalResults", namespaces=self.__open_search).text
-
-        # if total_results:
-        #     assert isinstance(total_results, str)
-
-        #     if total_results.isnumeric():
-        #         total_results = int(total_results)
-
         total_results = len(articles)
         response = {
             "total_results": total_results,
+            "search_category": self.category,
             "articles": articles
         }
         return response
