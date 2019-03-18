@@ -3,6 +3,8 @@ services:
 
   api:
     build: ./api/
+    env_file:
+      - .env
     ports:
       # CherryPy webserver port mapping
       - "9091:8080"
@@ -11,6 +13,7 @@ services:
 
     volumes:
       - ./api/:/app/src/
+      - '${SQLITE_PATH}:/app/src/MyArXivDB'
 
   web:
     build: ./web/
