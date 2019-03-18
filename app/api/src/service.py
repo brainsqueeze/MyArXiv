@@ -83,13 +83,13 @@ def handler(event, context):
         output = {"success": True, "data": response}
         return respond(None, res=output)
     elif re.match(r"/api/rate$", path, re.M | re.I):
-        print(json.dumps(body, indent=2))
         update_status(
             article_id=body["articleId"],
             status=body["interested"],
             title=body["title"],
             contents=body["content"],
-            category=body["categories"]
+            category=body["categories"],
+            datetime=None
         )
         return respond(None, {"Message": "Preference registered"})
     else:

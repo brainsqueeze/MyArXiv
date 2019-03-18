@@ -24,6 +24,7 @@ class Articles extends Component {
         summary={summaries[0]}
         categories={categories}
         interested={interested}
+        date={dates[0]}
       />
     </div>;
     return card

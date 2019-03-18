@@ -9,6 +9,7 @@ import {
 import { hot } from 'react-hot-loader';
 
 import Feed from './feed/feed';
+import About from './about';
 import Header from './feed/header';
 import NotFound from './not_found';
 import ErrorBoundary from './error_boundary';
@@ -62,6 +63,7 @@ class App extends Component {
               <Switch>
                 <Route exact path="/" render={() => <Redirect to="/feed"/>}/>
                 <Route exact path="/feed" component={Feed} />
+                <Route exact path="/about" component={About} />
                 <Route component={NotFound} />
               </Switch>
             </ErrorBoundary>

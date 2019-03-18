@@ -42,7 +42,8 @@ class SummaryCard extends Component {
         interested: this.state.interested && !this.state.notInterested,
         title: this.props.title,
         content: this.props.summary,
-        categories: this.props.categories.join(';')
+        categories: this.props.categories.join(';'),
+        date: this.props.date
       }
       this.props.applyRating(payload);
     }

@@ -64,7 +64,8 @@ def create_tables():
         article_id VARCHAR(20) PRIMARY KEY,
         title TEXT,
         contents TEXT,
-        category VARCHAR(50)
+        category VARCHAR(50),
+        article_date DATETIME
     );
     """
     db.execute(create, silent=True)
@@ -91,7 +92,7 @@ def get_like_statuses(article_ids):
     return records
 
 
-def update_status(article_id, status, title, contents, category):
+def update_status(article_id, status, title, contents, category, datetime):
     db = SqliteDatabase()
 
     query = """
@@ -101,10 +102,10 @@ def update_status(article_id, status, title, contents, category):
     db.execute_many(query, array=((article_id, status),))
 
     query = f"""
-    INSERT OR REPLACE INTO logs_content (article_id, title, contents, category)
-    VALUES (?, ?, ?, ?);
+    INSERT OR REPLACE INTO logs_content (article_id, title, contents, category, article_date)
+    VALUES (?, ?, ?, ?, ?);
     """
-    db.execute_many(query, array=((article_id, title, contents, category),))
+    db.execute_many(query, array=((article_id, title, contents, category, datetime),))
 
     db.teardown()
     return

@@ -16,7 +16,7 @@ services:
     build: ./web/
     ports:
       # webpack-development-server webserver port mapping
-      - "9090:9090"
+      - "1010:9090"
     environment:
       - NODE_ENV=local
     volumes:
