@@ -86,7 +86,7 @@ class ResponseHandler(object):
             "cs.CV": "Computer Science: Computer Vision",
             "hep-ex": "High Energy Physics: Experiment",
             "hep-ph": "High Energy Physics: Phenomenology",
-            "hep-tg": "High Energy Physics: Theory"
+            "hep-th": "High Energy Physics: Theory"
         }
         self.category = reverse_lookup[payload["search_query"]]
 
@@ -155,7 +155,7 @@ class ResponseHandler(object):
 
             most_recent = datetime.datetime.strptime(dates[0], '%Y-%m-%dT%H:%M:%SZ')
 
-            if (today - most_recent).days <= 4:
+            if (today - most_recent).days <= 1:
                 articles.append(doc)
 
         total_results = len(articles)
@@ -169,3 +169,4 @@ class ResponseHandler(object):
     @property
     def xml(self):
         return self.__response
+
