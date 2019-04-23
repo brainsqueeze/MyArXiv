@@ -33,7 +33,7 @@ class Filters extends Component {
 
   render() {
     return (
-      <section className="filters-all">
+      <section className={`filters-all ${this.props.showResponse ? 'show' : ''}`}>
         <form>
           <CategoryFilterDropdown 
             {...this.props.search} 

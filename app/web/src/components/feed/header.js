@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import NavigationLink from '../common/navigation_link';
 
+import Filters from './filters';
+
 class Header extends Component {
 
   constructor(props) {
@@ -13,12 +15,12 @@ class Header extends Component {
   render() {
     return (
       <header id="site-header">
-        <h1 id="site-logo"><a href="/">MyArXiv</a></h1>
-        {/* <a id="mobile-menu-toggle" 
-          className={this.state.responsiveShowState?'show':''} 
+        <a id="mobile-menu-toggle" 
+          className={this.state.responsiveShowState ? 'show' : ''} 
           onClick={() => this.setState({ responsiveShowState: !this.state.responsiveShowState })}>
-          <i className="fa fa-bars"></i><i className="fa fa-times"></i>
-        </a> */}
+          <i className="fa fa-bars"></i>
+        </a>
+        <h1 id="site-logo"><a href="/">MyArXiv</a></h1>
 
         <nav id="site-nav">
           <ul>
@@ -26,6 +28,8 @@ class Header extends Component {
             <NavigationLink external={false} to="/about" text="About" />
           </ul>
         </nav>
+
+        <Filters showResponse={this.state.responsiveShowState}/> 
       </header>
     )
   }
